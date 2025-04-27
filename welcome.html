@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Truth or Dare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            color: white;
+            background: url('https://cdnb.artstation.com/p/assets/images/images/000/007/515/large/mysterious_hd.jpg?1400148480') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        h1 {
+            font-size: 50px;
+            margin-bottom: 10px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        p {
+            font-size: 22px;
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .btn {
+            display: inline-block;
+            background: rgba(255, 69, 0, 0.9);
+            color: white;
+            font-size: 20px;
+            padding: 12px 24px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: 0.4s;
+            animation: fadeIn 2.5s ease-in-out;
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.7);
+        }
+
+        .btn:hover {
+            background: rgba(255, 69, 0, 1);
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(255, 69, 0, 1);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to Truth or Dare</h1>
+    <p>Are you ready for some fun and excitement?</p>
+    <a href="game.html" class="btn">Start Game</a>
+
+</body>
+</html>
