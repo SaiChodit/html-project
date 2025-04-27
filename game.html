@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Truth or Dare - Game</title>
+  <style>
+    body {
+      background: url('https://www.shutterstock.com/blog/wp-content/uploads/sites/5/2020/07/shutterstock_582803470.jpg?w=750') no-repeat center center/cover;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      color: black;
+    }
+    .container {
+      background: rgb(21, 114, 119);
+      padding: 30px;
+      margin: 20px auto;
+      width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    textarea {
+      resize: vertical;
+    }
+    .responses {
+      margin-top: 20px;
+      text-align: left;
+      background: #ffffffaa;
+      padding: 15px;
+      border-radius: 10px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .responses h3 {
+      margin-top: 0;
+    }
+    .clear-btn {
+      background-color: crimson;
+      color: white;
+    }
+    .clear-btn:hover {
+      background-color: darkred;
+    }
+  </style>
+</head>
+<body onload="initializeGame()">
+
+  <div class="container">
+    <h2>Welcome, <span id="player"></span>!</h2>
+    <p>Choose an option:</p>
+    <button onclick="playGame('truth')">Truth</button>
+    <button onclick="playGame('dare')">Dare</button>
+    <p id="question"></p>
+
+    <div id="response-section" style="display: none;">
+      <textarea id="responseInput" rows="3" style="width: 100%; padding: 10px; border-radius: 5px;" placeholder="Type your response here..."></textarea>
+      <button onclick="submitResponse()">Submit</button>
+      <p id="responseMessage"></p>
+    </div>
+
+    <div class="responses" id="responsesContainer">
+      <h3>Submitted Responses</h3>
+      <ul id="responsesList"></ul>
+      <button class="clear-btn" onclick="clearResponses()">Clear Responses</button>
+    </div>
+  </div>
+
+  <script>
+    function initializeGame() {
+      loadPlayerName();
+      loadResponses();
+    }
+
+    function loadPlayerName() {
+      let storedUser = JSON.parse(localStorage.getItem("user"));
+      document.getElementById("player").innerText = storedUser?.name || "Player";
+    }
+
+    function playGame(choice) {
+      const truthQuestions = [
+        "What is your biggest fear?",
+        "What is the most embarrassing thing you've done?",
+        "Have you ever lied to your best friend?",
+        "What's a secret you've never told anyone?",
+        "Have you ever had a secret crush on someone?"
+      ];
+      const dareChallenges = [
+        "Call a random contact and roast them.",
+        "Imitate an animal for 30 seconds.",
+        "Dance for 30 seconds!",
+        "Talk in a funny voice for 2 minutes!",
+        "Sing a song loudly!"
+      ];
+
+      const question = choice === "truth"
+        ? truthQuestions[Math.floor(Math.random() * truthQuestions.length)]
+        : dareChallenges[Math.floor(Math.random() * dareChallenges.length)];
+
+      document.getElementById("question").innerText = question;
+      document.getElementById("response-section").style.display = "block";
+      document.getElementById("responseInput").value = "";
+      document.getElementById("responseMessage").innerText = "";
+    }
+
+    function submitResponse() {
+      const response = document.getElementById("responseInput").value.trim();
+      if (!response) {
+        document.getElementById("responseMessage").innerText = "Please enter a response before submitting.";
+        return;
+      }
+
+      const responses = JSON.parse(localStorage.getItem("responses") || "[]");
+      responses.push(response);
+      localStorage.setItem("responses", JSON.stringify(responses));
+
+      document.getElementById("responseMessage").innerText = "Thanks for your response!";
+      displayResponses();
+    }
+
+    function loadResponses() {
+      displayResponses();
+    }
+
+    function displayResponses() {
+      const responses = JSON.parse(localStorage.getItem("responses") || "[]");
+      const list = document.getElementById("responsesList");
+      list.innerHTML = "";
+
+      responses.forEach((res, index) => {
+        const li = document.createElement("li");
+        li.textContent = `${index + 1}. ${res}`;
+        list.appendChild(li);
+      });
+    }
+
+    function clearResponses() {
+      if (confirm("Are you sure you want to clear all responses?")) {
+        localStorage.removeItem("responses");
+        displayResponses();
+      }
+    }
+  </script>
+
+</body>
+</html>
