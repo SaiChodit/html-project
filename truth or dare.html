@@ -1,1 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Truth or Dare - Website</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #8bacb5;
+      color: #333;
+    }
+    nav {
+      background-color: #005f73;
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+    }
+    nav button {
+      background: transparent;
+      border: none;
+      color: white;
+      margin: 0 15px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    nav button:hover {
+      text-decoration: underline;
+    }
+    .section {
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .container {
+      background: rgb(169, 186, 193);
+      padding: 30px;
+      margin: 20px auto;
+      width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    input, button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <button onclick="showSection('home')">Home</button>
+    <button onclick="showSection('about')">About</button>
+    <button onclick="showSection('contact')">Contact</button>
+  </nav>
+
+  <!-- Home Section -->
+  <div id="home" class="section">
+    <div id="logoSection">🎉 Truth or Dare 🎲</div>
+
+    <!-- Registration Form -->
+    <div id="registration" class="container">
+      <h1>Register</h1>
+      <input type="text" id="regName" placeholder="Enter your name">
+      <input type="email" id="regEmail" placeholder="Enter your email">
+      <input type="text" id="regAge" placeholder="Enter your age">
+      <input type="text" id="regGender" placeholder="Enter your gender">
+      <input type="tel" id="regPhone" placeholder="Enter your phone number">
+      <input type="text" id="regAddress" placeholder="Enter your address">
+      <input type="password" id="regPassword" placeholder="Enter your password">
+      <button onclick="registerUser()">Register</button>
+    </div>
+
+    <!-- Login Form -->
+    <div id="login" class="container hidden">
+      <h2>Login</h2>
+      <input type="email" id="loginEmail" placeholder="Enter your email">
+      <input type="password" id="loginPassword" placeholder="Enter your password">
+      <button onclick="loginUser()">Login</button>
+    </div>
+
+    <!-- Welcome -->
+    <div id="welcome" class="container hidden">
+      <h2>Welcome, <span id="welcomeUser"></span>!</h2>
+      <p>Are you ready to play Truth or Dare?</p>
+      <button onclick="startGame()">Start Game</button>
+    </div>
+
+    <!-- Game -->
+    <div id="game" class="container hidden">
+      <h2>Welcome, <span id="player"></span>!</h2>
+      <p>Choose an option:</p>
+      <button onclick="playGame('truth')">Truth</button>
+      <button onclick="playGame('dare')">Dare</button>
+      <p id="question"></p>
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <div id="about" class="section hidden">
+    <h2>About Truth or Dare</h2>
+    <p>Truth or Dare is a classic party game that helps break the ice and bring out the fun in everyone!</p>
+    <p>Truth or Dare is a party game where players choose between answering a truthful question or completing a dare. It's a popular activity for groups of friends, often played during social gatherings. The game involves a cycle of players choosing, either to answer a truth question truthfully or to perform a dare. 
+        Here's a more detailed breakdown:
+        Gameplay:
+        Players take turns choosing between truth or dare. If they choose truth, they must answer a question honestly. If they choose dare, they must complete a challenge or act. 
+        Variations:
+        There are different modes for kids, teens, adults, and couples, with varying levels of challenge and appropriateness. 
+        Purpose:
+        The game is designed to be fun, revealing, and can lead to some interesting interactions and confessions among players</p>
+    <p>Whether you're looking for a funny dare or a revealing truth, this game has you covered.</p>
+  </div>
+
+  <!-- Contact Section -->
+  <div id="contact" class="section hidden">
+    <h2>Contact Us</h2>
+    <p>If you have any questions, suggestions, or feedback, feel free to reach out:</p>
+    <p>Email: saisurapu7@gmail.com</p>
+    <p>Phone: 9613100517</p>
+  </div>
+
+  <script>
+    function showSection(sectionId) {
+      document.getElementById("home").classList.add("hidden");
+      document.getElementById("about").classList.add("hidden");
+      document.getElementById("contact").classList.add("hidden");
+      document.getElementById(sectionId).classList.remove("hidden");
+    }
+
+    function registerUser() {
+      let name = document.getElementById("regName").value;
+      let email = document.getElementById("regEmail").value;
+      let age = document.getElementById("regAge").value;
+      let gender = document.getElementById("regGender").value;
+      let phone = document.getElementById("regPhone").value;
+      let address = document.getElementById("regAddress").value;
+      let password = document.getElementById("regPassword").value;
+
+      if (name === "" || email === "" || age === "" || gender === "" || phone === "" || address === "" || password === "") {
+        alert("Please fill all fields!");
+        return;
+      }
+
+      let user = { name, email, age, gender, phone, address, password };
+      localStorage.setItem("user", JSON.stringify(user));
+
+      alert("Registration successful! Please log in.");
+      document.getElementById("registration").style.display = "none";
+      document.getElementById("login").style.display = "block";
+    }
+
+    function loginUser() {
+      let loginEmail = document.getElementById("loginEmail").value;
+      let loginPassword = document.getElementById("loginPassword").value;
+      let storedUser = JSON.parse(localStorage.getItem("user"));
+
+      if (storedUser && loginEmail === storedUser.email && loginPassword === storedUser.password) {
+        alert("Login successful! Welcome " + storedUser.name);
+        document.getElementById("login").style.display = "none";
+        document.getElementById("welcome").style.display = "block";
+        document.getElementById("welcomeUser").innerText = storedUser.name;
+        window.location.href = "welcome.html";
+      } else {
+        alert("Invalid login credentials. Try again!");
+      }
+    }
+
+    function startGame() {
+      let storedUser = JSON.parse(localStorage.getItem("user"));
+      document.getElementById("welcome").style.display = "none";
+      document.getElementById("game").style.display = "block";
+      document.getElementById("player").innerText = storedUser.name;
+    }
+
+    function playGame(choice) {
+      let truthQuestions = [
+        "What is your biggest fear?",
+        "What is the most embarrassing thing you've done?",
+        "Have you ever lied to your best friend?",
+        "What's a secret you've never told anyone?",
+        "Have you ever had a secret crush on someone?"
+      ];
+      let dareChallenges = [
+        "Call a random contact and roast them.",
+        "Imitate an animal for 30 seconds.",
+        "Dance for 30 seconds!",
+        "Talk in a funny voice for 2 minutes!",
+        "Sing a song loudly!"
+      ];
+
+      let question = choice === "truth"
+        ? truthQuestions[Math.floor(Math.random() * truthQuestions.length)]
+        : dareChallenges[Math.floor(Math.random() * dareChallenges.length)];
+
+      document.getElementById("question").innerText = question;
+    }
+
+    // Default to show Home section
+    showSection('home');
+  </script>
+
+</body>
+</html>
 
